@@ -17,6 +17,3 @@ Every pod is given avirtual IP address, which is used to communicate with other 
 
 
 
-![alt text](image.png)
-
-![alt text](image-1.png)
