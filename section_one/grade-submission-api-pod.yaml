@@ -2,17 +2,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: grade-submission-portal
+  name: grade-submission-api
   labels:
-    # categorisation
-    # to prefix key with app.kubernetes.io to avoid collision
     app.kubernetes.io/name: grade-submission # level 1 = the app it belonges to
-    app.kubernetes.io/component: frontend # level 2 = role
-    app.kubernetes.io/instance: grade-submission-portal # level 3 = unique identifier
+    app.kubernetes.io/component: backend # level 2 = role
+    app.kubernetes.io/instance: grade-submission-api # level 3 = unique identifier
 spec:
   containers:
-    - name: grade-submission-portal
-      image: rslim087/kubernetes-course-grade-submission-portal:latest # to be pulles from docker hub
+    - name: grade-submission-api
+      image: rslim087/kubernetes-course-grade-submission-api:stateless # to be pulles from docker hub
       # imagePullPolicy: Always # to avoid image pulling errors
       resources: # to be definned after load tests
         # minimal resources required to run the app, will help to select a node which can provision the resources
@@ -26,8 +24,8 @@ spec:
       ports:
         - containerPort: 5001 # port to be exposed
 
-    - name: grade-submission-portal-health-checker
-      image: rslim087/kubernetes-course-grade-submission-portal-health-checker
+    - name: grade-submission-api-health-checker
+      image: rslim087/kubernetes-course-grade-submission-api-health-checker
       resources:
         requests:
           memory: '128Mi'

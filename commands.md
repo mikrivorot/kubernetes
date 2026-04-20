@@ -27,11 +27,14 @@ kubectl delete pod grade-submission-portal && kubectl apply -f section_one/grade
 
 ```
 kubectl describe pod grade-submission-portal
+kubectl describe <type> <name>
 kubectl logs grade-submission-portal
 kubectl get pods
 
 # stream logs
+kubectl logs -f <pod> -c <container name, optional>
 kubectl logs -f grade-submission-portal
+kubectl logs -f grade-submission-portal -c grade-submission-portal-health-checker
 
 ```
 
@@ -43,8 +46,9 @@ kubectl port-forward grade-submission-portal <local machine>:<port fron yaml>
 
 
 Use label selector to delete all resources with a specific label
+(at least one resource must be specified to use a selector = in our case it is `pods`)
 ```
-kubectl delete -l "app.kubernetes.io/name=grade-submission"
+kubectl delete pods -l "app.kubernetes.io/name=grade-submission"
 ```
 
 
@@ -52,3 +56,4 @@ Pod can run multiple containers = created/terminated and scaled at the same time
 Can communicate with each other via localhost.
 
 Example = side car pattern, health checker.
+
