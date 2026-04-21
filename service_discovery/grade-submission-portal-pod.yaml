@@ -14,6 +14,11 @@ spec:
     - name: grade-submission-portal
       image: rslim087/kubernetes-course-grade-submission-portal:latest # to be pulles from docker hub
       # imagePullPolicy: Always # to avoid image pulling errors
+      env: # inject env. variables we use in the app
+        - name: GRADE_SERVICE_HOST
+          value: grade-submission-api # the name of the service
+          # also we have to define the port, but it is hardcoded
+          # using these envs, we can now connect pod portal to pod API
       resources: # to be definned after load tests
         # minimal resources required to run the app, will help to select a node which can provision the resources
         requests:

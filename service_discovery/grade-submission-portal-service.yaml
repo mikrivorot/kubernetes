@@ -5,8 +5,7 @@ metadata:
 spec:
   type: NodePort # to expose the service to the cluster
   selector:
-    app.kubernetes.io/instance: grade-submission-portal # level 3 = unique identifier
-  # How it connects
+    app.kubernetes.io/instance: grade-submission-portal
   # The corresponding Pod must have a matching label in its metadata.labels:
   # metadata:
   #   labels:
