@@ -1,31 +1,20 @@
-```
+```bash
 kubectl config get-contexts
 kubectl config use-context docker-desktop
 ```
 
 ---
 
-`kubectl apply -f <file>` can create any Kubernetes resource type — whatever is defined in the YAML:
-
-Pod
-Deployment
-Service
-ConfigMap
-Namespace
-etc.
-
-```
+```bash
+# create or update any resource from a YAML file (Pod, Deployment, Service, ConfigMap, Namespace, etc.)
+kubectl apply -f <file>
 kubectl apply -f section_one/grade-submission-portal-pod.yaml
 
-# if already exists
+# delete and recreate if already exists
 kubectl delete pod grade-submission-portal && kubectl apply -f section_one/grade-submission-portal-pod.yaml
-
-# pod/grade-submission-portal deleted
-# pod/grade-submission-portal created
-
 ```
 
-```
+```bash
 kubectl describe pod grade-submission-portal
 kubectl describe <type> <name>
 kubectl logs grade-submission-portal
@@ -35,25 +24,30 @@ kubectl get pods
 kubectl logs -f <pod> -c <container name, optional>
 kubectl logs -f grade-submission-portal
 kubectl logs -f grade-submission-portal -c grade-submission-portal-health-checker
-
 ```
 
-```
-# forwar port to access containter app
-kubectl port-forward grade-submission-portal <local machine>:<port fron yaml>
+```bash
+# forward port to access container app locally
+kubectl port-forward grade-submission-portal <local-port>:<pod-port>
 ```
 
-
-
-Use label selector to delete all resources with a specific label
-(at least one resource must be specified to use a selector = in our case it is `pods`)
-```
+```bash
+# delete all pods with a specific label
 kubectl delete pods -l "app.kubernetes.io/name=grade-submission"
 ```
 
+```bash
+# reapply deployment changes (use instead of deleting pods — controller will recreate them anyway)
+kubectl apply -f grade-submission-api-deployment.yaml
+kubectl apply -f grade-submission-portal-deployment.yaml
+```
 
-Pod can run multiple containers = created/terminated and scaled at the same time, same network, same port.
-Can communicate with each other via localhost.
+```bash
+# list all Services in a namespace — shows type, ports, NodePort
+kubectl get svc -n grade-submission
+```
 
-Example = side car pattern, health checker.
-
+```bash
+# show memory and CPU usage per pod (requires Metrics Server)
+kubectl top pods -n grade-submission
+```

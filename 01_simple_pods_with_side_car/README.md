@@ -15,6 +15,10 @@ Port forwarding creates a temporary connection between your local machine and a 
 
 Every pod is given a virtual IP address, which is used to communicate with other pods in the cluster.
 
+Pod can run multiple containers — created/terminated and scaled at the same time, sharing the same network and ports. Containers communicate with each other via localhost.
+
+Example: sidecar pattern, health checker.
+
 ### Metadata vs Spec
 
 **`metadata`** — identifies the object so other objects and tools can find and reference it (via name and labels).
