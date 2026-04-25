@@ -7,6 +7,8 @@ If we delete a Pod, Kubernetes will automatically create a new one.
 ![alt text](image.png)
 
 
+A **cluster** is the set of machines (nodes) that Kubernetes manages — one control plane node running the Kubernetes brain, and worker nodes running your application pods.
+
 Deployment and ReplicaSet are **Kubernetes objects** — defined in YAML files and submitted to the cluster via `kubectl apply`. The YAML file is just the definition; the object is what lives and runs in the cluster.
 
 ## Deployment
@@ -55,4 +57,66 @@ Lists all Services in a namespace — shows type, cluster IP, ports, and NodePor
 
 ```bash
 kubectl get svc -n grade-submission
+```
+
+
+![alt text](image-5.png)
+
+
+## Stopping the cluster
+
+**Delete everything** (namespace + all objects inside it):
+```bash
+kubectl delete namespace grade-submission
+```
+
+**Scale down to 0** (keeps objects, stops all pods — no need to touch Services, they're just routing rules with no pods to route to):
+```bash
+kubectl scale deployment grade-submission-portal -n grade-submission --replicas=0
+kubectl scale deployment grade-submission-api -n grade-submission --replicas=0
+```
+
+**Scale back up:**
+```bash
+kubectl scale deployment grade-submission-portal -n grade-submission --replicas=1
+kubectl scale deployment grade-submission-api -n grade-submission --replicas=3
+```
+
+## Deployment Flow
+
+```
+Browser
+  │
+  │ http://localhost:32000
+  ▼
+┌─────────────────────────────────────────────┐
+│  Service: grade-submission-portal (NodePort)│
+│  nodePort: 32000 → port: 5001               │
+└─────────────────┬───────────────────────────┘
+                  │ selects by: instance=grade-submission-portal
+                  ▼
+┌─────────────────────────────────────────────┐
+│  Deployment: grade-submission-portal        │
+│  replicas: 1                                │
+│  └── Pod: grade-submission-portal           │
+│        containerPort: 5001                  │
+│        env: GRADE_SERVICE_HOST=             │
+│             grade-submission-api            │
+└─────────────────┬───────────────────────────┘
+                  │ calls service by name: grade-submission-api:3000
+                  ▼
+┌─────────────────────────────────────────────┐
+│  Service: grade-submission-api (ClusterIP)  │
+│  port: 3000 → targetPort: 3000              │
+└─────────────────┬───────────────────────────┘
+                  │ selects by: instance=grade-submission-api
+                  ▼
+┌─────────────────────────────────────────────┐
+│  Deployment: grade-submission-api           │
+│  replicas: 3                                │
+│  ├── Pod 1: grade-submission-api            │
+│  ├── Pod 2: grade-submission-api            │
+│  └── Pod 3: grade-submission-api            │
+│        containerPort: 5001                  │
+└─────────────────────────────────────────────┘
 ```
