@@ -13,7 +13,13 @@ Pods can run multiple containers, enabling sidecar patterns where auxiliary side
 
 Port forwarding creates a temporary connection between your local machine and a pod in the cluster. It's primarily used for debugging and testing purposes.
 
-Every pod is given avirtual IP address, which is used to communicate with other pods in the cluster.
+Every pod is given a virtual IP address, which is used to communicate with other pods in the cluster.
+
+### Metadata vs Spec
+
+**`metadata`** — identifies the object so other objects and tools can find and reference it (via name and labels).
+
+**`spec`** — defines what the object should do or how it should behave.
 
 
 

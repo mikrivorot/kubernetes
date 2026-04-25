@@ -1,0 +1,33 @@
+# sceleton is generate by K8 VS Code extension
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grade-submission-portal
+  namespace: grade-submission
+  labels:
+    # categorisation
+    # to prefix key with app.kubernetes.io to avoid collision
+    app.kubernetes.io/name: grade-submission # level 1 = the app it belonges to
+    app.kubernetes.io/component: frontend # level 2 = role
+    app.kubernetes.io/instance: grade-submission-portal # level 3 = unique identifier
+spec:
+  containers:
+    - name: grade-submission-portal
+      image: rslim087/kubernetes-course-grade-submission-portal:latest # to be pulles from docker hub
+      # imagePullPolicy: Always # to avoid image pulling errors
+      env: # inject env. variables we use in the app
+        - name: GRADE_SERVICE_HOST
+          value: grade-submission-api # the name of the service
+          # also we have to define the port, but it is hardcoded
+          # using these envs, we can now connect pod portal to pod API
+      resources: # to be definned after load tests
+        # minimal resources required to run the app, will help to select a node which can provision the resources
+        requests:
+          memory: '128Mi' # uncompressable resources
+          cpu: '200m' # milli cors compressable resources = you can throttle compute
+        limits:
+          # to avoid 'out of memory' error
+          memory: '256Mi'
+          # cpu: '500m' # no limits, cpu can be throttled - advices by k8s creators
+      ports:
+        - containerPort: 5001 # port to be exposed
