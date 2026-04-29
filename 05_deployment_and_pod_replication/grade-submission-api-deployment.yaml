@@ -1,28 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: # identifies the Deployment object
+metadata:
+  # identifies the Deployment object
   name: grade-submission-api
   namespace: grade-submission
-spec: # defines how the Deployment behaves
+spec:
+  # defines how the Deployment behaves
   replicas: 3 # number of pod copies to maintain
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 50% # max unavailable pods
-
-      # max additional pods that can be schedued above the original number of pods - to have always 3 pods max
-      # it means when you have 3 pods and you want to add another one, you have to start deleting pods
-      maxSurge: 1
-  selector: # tells the Deployment which pods it owns
+      maxSurge: 1 # The maximum number of pods that can be created over the desired number of pods.
+  selector:
+    # tells the Deployment which pods it owns
     matchLabels:
       app.kubernetes.io/instance: grade-submission-api # unique identifier — distinguishes this instance from other deployments of the same app
-  template: # blueprint for the pods the Deployment creates (previously managed by grade-submission-api-pod.yaml)
-    metadata: # labels attached to each created pod
+  template:
+    # blueprint for the pods the Deployment creates (previously managed by grade-submission-api-pod.yaml)
+    metadata:
+      # labels attached to each created pod
       labels:
         app.kubernetes.io/name: grade-submission
         app.kubernetes.io/component: backend
         app.kubernetes.io/instance: grade-submission-api
-    spec: # defines the containers running inside each pod
+    spec:
+      # defines the containers running inside each pod
       containers:
         - name: grade-submission-api
           image: rslim087/kubernetes-course-grade-submission-api:stateless

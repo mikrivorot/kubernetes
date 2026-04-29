@@ -36,30 +36,16 @@ kubectl apply -f grade-submission-api-deployment.yaml
 kubectl apply -f grade-submission-portal-deployment.yaml
 ```
 
-Kubernetes will perform a rolling update — gradually replacing old pods with new ones, without downtime.
+Kubernetes will perform a rolling update — it gradually replaces old pods with new ones — ensuring some pods are always running during the update, so there is no downtime.
 
 ![alt text](image-6.png)
 
-### Rolling update
 
-Kubernetes gradually replaces old pods with new ones — ensuring some pods are always running during the update, so there is no downtime.
-
-![alt text](image-7.png)
-
-### Rolling back
-
-If a rollout introduces a bug, roll back to the previous ReplicaSet (Kubernetes keeps the old one for this purpose):
-
-```bash
-kubectl rollout undo deployment/grade-submission-api -n grade-submission
-kubectl rollout undo deployment/grade-submission-portal -n grade-submission
-```
 
 To check rollout status:
 ```bash
 kubectl rollout status deployment/grade-submission-api -n grade-submission
 ```
-
 
 
 Before modifications:
@@ -68,12 +54,37 @@ Before modifications:
 
 
 Modifications application:
+
 ![alt text](image-2.png)
 
 
 Applied: 
 
 ![alt text](image-4.png)
+
+
+How does `maxSurge: 1` looks like:
+
+![alt text](image-8.png)
+
+
+
+How does `maxUnavailable: 1` looks like:
+
+![alt text](image-9.png)
+
+
+## Rolling back
+
+
+![alt text](image-7.png)
+
+If a rollout introduces a bug, roll back to the previous ReplicaSet (Kubernetes keeps the old one for this purpose):
+
+```bash
+kubectl rollout undo deployment/grade-submission-api -n grade-submission
+kubectl rollout undo deployment/grade-submission-portal -n grade-submission
+```
 
 ## Inspecting Services
 
