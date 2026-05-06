@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: # identifies the Deployment object
+  name: grade-submission-portal
+  namespace: grade-submission
+spec: # defines how the Deployment behaves
+  replicas: 1 # number of pod copies to maintain
+  selector: # tells the Deployment which pods it owns
+    matchLabels:
+      app.kubernetes.io/instance: grade-submission-portal # unique identifier — distinguishes this instance from other deployments of the same app
+  template: # blueprint for the pods the Deployment creates (previously managed by grade-submission-portal-pod.yaml)
+    metadata: # labels attached to each created pod
+      labels:
+        app.kubernetes.io/name: grade-submission
+        app.kubernetes.io/component: frontend
+        app.kubernetes.io/instance: grade-submission-portal
+    spec: # defines the containers running inside each pod
+      containers:
+        - name: grade-submission-portal
+          image: rslim087/kubernetes-course-grade-submission-portal:latest
+          env: # inject env variables used by the app to connect to the API
+            - name: GRADE_SERVICE_HOST
+              value: grade-submission-api # name of the API service
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '200m'
+            limits:
+              memory: '256Mi'
+          ports:
+            - containerPort: 5001
