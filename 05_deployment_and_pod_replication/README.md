@@ -105,6 +105,11 @@ kubectl get svc -n grade-submission
 kubectl delete namespace grade-submission
 ```
 
+**Delete only deployments** (keeps namespace, Services, ConfigMaps, etc. — only removes Deployment objects; pods are stopped and removed too via cascading deletion through the ReplicaSet):
+```bash
+kubectl delete deployments --all -n grade-submission
+```
+
 **Scale down to 0** (keeps objects, stops all pods — no need to touch Services, they're just routing rules with no pods to route to):
 ```bash
 kubectl scale deployment grade-submission-portal -n grade-submission --replicas=0

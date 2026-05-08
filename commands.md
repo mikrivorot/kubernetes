@@ -51,3 +51,36 @@ kubectl get svc -n grade-submission
 # show memory and CPU usage per pod (requires Metrics Server)
 kubectl top pods -n grade-submission
 ```
+
+```bash
+# view the full live spec of a deployment as Kubernetes sees it
+kubectl get deployment <name> -n <namespace> -o yaml
+kubectl get deployment grade-submission-portal -n grade-submission -o yaml
+```
+
+```bash
+# delete all deployments in a namespace (cascades to ReplicaSets and Pods)
+kubectl delete deployments --all -n <namespace>
+kubectl delete deployments --all -n grade-submission
+```
+
+```bash
+# list all PersistentVolumeClaims in a namespace — shows status (Bound/Pending), PV name, size, and access mode
+kubectl get pvc -n <namespace>
+kubectl get pvc -n grade-submission
+# NAME                                   STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+# mongodb-persistent-storage-mongodb-0   Bound    pvc-8f2580b4-4385-4fc0-8476-8edffe16ff10   1Gi        RWO            hostpath       30m
+# mongodb-persistent-storage-mongodb-1   Bound    pvc-f0213168-b460-410b-834e-7afdd50fe9a5   1Gi        RWO            hostpath       30m
+```
+
+```bash
+# list all StatefulSets in a namespace — shows desired vs ready replicas
+kubectl get statefulset -n <namespace>
+kubectl get statefulset -n grade-submission
+# NAME      READY   AGE
+# mongodb   2/2     30m
+
+# show full details of a StatefulSet — events, pod template, volume claims
+kubectl describe statefulset <name> -n <namespace>
+kubectl describe statefulset mongodb -n grade-submission
+```
