@@ -74,6 +74,19 @@ kubectl get pvc -n grade-submission
 ```
 
 ```bash
+# scale down all workloads to 0 (keeps objects, stops all pods)
+kubectl scale deployment grade-submission-api grade-submission-portal -n grade-submission --replicas=0
+# deployment.apps/grade-submission-api scaled
+# deployment.apps/grade-submission-portal scaled
+kubectl scale statefulset mongodb -n grade-submission --replicas=0
+# statefulset.apps/mongodb scaled
+
+# scale back up
+kubectl scale deployment grade-submission-api grade-submission-portal -n grade-submission --replicas=1
+kubectl scale statefulset mongodb -n grade-submission --replicas=2
+```
+
+```bash
 # list all StatefulSets in a namespace — shows desired vs ready replicas
 kubectl get statefulset -n <namespace>
 kubectl get statefulset -n grade-submission
