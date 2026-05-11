@@ -4,7 +4,7 @@ metadata:
   name: mongodb
   namespace: grade-submission
 spec:
-  type: ClusterIP
+  type: ClusterIP # no need to define, as any Service by deafult is of type ClusterIP
   selector:
     # let's forward all traffic to the pod with following label
     app.kubernetes.io/instance: mongodb

@@ -62,6 +62,9 @@ kubectl get deployment grade-submission-portal -n grade-submission -o yaml
 # delete all deployments in a namespace (cascades to ReplicaSets and Pods)
 kubectl delete deployments --all -n <namespace>
 kubectl delete deployments --all -n grade-submission
+
+# delete deployments, statefulsets, and PVCs together (full teardown including storage)
+kubectl delete deployments,statefulsets,pvc --all -n grade-submission
 ```
 
 ```bash

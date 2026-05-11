@@ -28,7 +28,7 @@ spec:
       # defines the containers running inside each pod
       containers:
         - name: grade-submission-api
-          image: rslim087/kubernetes-course-grade-submission-api:stateless-v2
+          image: rslim087/kubernetes-course-grade-submission-api:stateless-v3
           # define healthchecks
           livenessProbe:
             httpGet:
@@ -47,6 +47,10 @@ spec:
               value: mongodb
             - name: MONGODB_PORT
               value: '27017' # ClusterIP service port
+            - name: MONGODB_USER
+              value: 'admin'
+            - name: MONGODB_PASSWORD
+              value: 'password123'
           resources:
             requests:
               memory: '48Mi'

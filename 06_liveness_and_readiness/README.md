@@ -26,3 +26,7 @@ If the probe receives anything other than a 200 status, or no response, it keeps
 
 Interesting that on /readyz we have to really implement internal checks too
 
+
+## Example - pods are running but not ready (cannot connect to DB)
+
+![alt text](image-2.png)
