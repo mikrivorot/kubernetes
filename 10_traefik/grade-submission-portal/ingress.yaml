@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grade-submission-portal-ingress
+  namespace: grade-submission
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: grade-submission-portal
+                port:
+                  number: 5001
