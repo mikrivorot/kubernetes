@@ -1,6 +1,18 @@
 ## HPA
 
-HPA stands for Horizontal Pod Autoscaler. It is a Kubernetes feature that automatically scales the number of pods in a deployment or statefulset based on CPU utilization (and only on CPU utilization, not on memory).
+HPA stands for Horizontal Pod Autoscaler. It is a Kubernetes feature that automatically scales the number of pods in a deployment or statefulset based on CPU utilization (not on memory), but custom metrics can be used as well.
+
+Autoscaling Behavior: The HPA will increase or decrease the number of replicas to maintain the target CPU utilization.
+
+Scaling Range: The number of pods will be adjusted between 1 and 10 based on the CPU utilization.
+
+Resource Metrics: While this example uses CPU, HPAs can also use memory or custom metrics.
+
+Target Utilization: 50% target utilization is a common starting point, but this can be adjusted based on application needs.
+
+Namespace Scoping: The HPA is namespace-specific, allowing for isolated scaling policies across different parts of your application.
+
+Scaling Algorithm: Kubernetes uses a control loop to periodically adjust the number of replicas based on the observed metrics.
 
 ## Metrics Server
 

@@ -64,7 +64,7 @@ kubectl delete deployments --all -n <namespace>
 kubectl delete deployments --all -n grade-submission
 
 # delete deployments, statefulsets, and PVCs together (full teardown including storage)
-kubectl delete deployments,statefulsets,pvc --all -n grade-submission
+kubectl delete deployments,statefulsets,pvc,hpa --all -n grade-submission
 ```
 
 ```bash

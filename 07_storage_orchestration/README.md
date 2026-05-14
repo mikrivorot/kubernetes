@@ -56,6 +56,8 @@ PVCs are not deleted when pods are deleted. If you delete all pods and reapply t
 ```bash
 kubectl delete pods --all -n grade-submission  # deletes pods, PVCs untouched
 kubectl apply -f 07_storage_orchestration/.    # pods recreated, same volumes reattached
+
+kubectl get svc -n grade-submission
 ```
 
 StatefulSet pods (`mongodb-0`, `mongodb-1`) always reconnect to their own PVC by name, so each pod gets back exactly the data it had before.

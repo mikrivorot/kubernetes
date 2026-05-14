@@ -22,3 +22,9 @@ ReplicaSet (created by Deployment)
 6. Do pods have shared storage?
 
 7. How to manage a mongo cluster?
+
+8. What is a maintenance window for GKE cluster?
+
+9. What is a STORAGECLASS for PVC?
+
+10. Can I get a percentage of used memory for a pod (mongo)?

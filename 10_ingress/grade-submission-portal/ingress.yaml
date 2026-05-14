@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grade-submission-portal-ingress
+  namespace: grade-submission
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: '10.0.0.0/8,192.168.0.0/16'
+spec:
+  ingressClassName: nginx # why?
+  rules:
+    # - host: <Host> # fully qualified domain name like grades.myuniversity.com, so if do not buy one, we do not use it
+    - http:
+        paths: # from localhost and without port
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: grade-submission-portal # from service.yaml
+                port:
+                  number: 5001 # from service.yaml
