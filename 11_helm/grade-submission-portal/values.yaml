@@ -1,0 +1,47 @@
+# Default values for grade-submission-portal Helm chart
+
+# Namespace
+namespace: grade-submission
+
+# Replica count
+replicaCount: 1
+
+# Image configuration
+image:
+  repository: rslim087/kubernetes-course-grade-submission-portal
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 5001
+  targetPort: 5001
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+  host: localhost
+  annotations: {}
+
+# API backend configuration
+config:
+  GRADE_SERVICE_HOST: grade-submission-api
+  GRADE_SERVICE_PORT: '3000'
+
+# Resource requests and limits
+resources:
+  requests:
+    memory: '128Mi'
+    cpu: '200m'
+  limits:
+    memory: '256Mi'
+
+# Container port
+containerPort: 5001
+
+# Labels
+labels:
+  app.kubernetes.io/name: grade-submission
+  app.kubernetes.io/component: frontend

@@ -1,0 +1,35 @@
+# Default values for mongodb Helm chart
+
+# Namespace
+namespace: grade-submission
+
+# Replica count for StatefulSet
+replicaCount: 1
+
+# Image configuration
+image:
+  repository: mongo
+  tag: '4.4'
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 27017
+  targetPort: 27017
+
+# Storage configuration
+storage:
+  size: 1Gi
+  accessModes:
+    - ReadWriteOnce
+
+# Secret data (base64 encoded)
+secrets:
+  MONGO_INITDB_ROOT_USERNAME: YWRtaW4=
+  MONGO_INITDB_ROOT_PASSWORD: cGFzc3dvcmQxMjM=
+
+# Labels
+labels:
+  app.kubernetes.io/name: grade-submission
+  app.kubernetes.io/component: database

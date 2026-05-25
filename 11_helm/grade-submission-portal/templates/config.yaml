@@ -1,0 +1,12 @@
+{{- if .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grade-submission-portal-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: grade-submission
+    app.kubernetes.io/component: frontend
+data:
+  {{- toYaml .Values.config | nindent 2 }}
+{{- end }}

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: grade-submission
+    app.kubernetes.io/component: database
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mongodb
+  serviceName: mongodb
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: mongodb
+        app.kubernetes.io/name: grade-submission
+        app.kubernetes.io/component: database
+    spec:
+      containers:
+      - name: mongodb
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 27017
+          name: web
+        envFrom:
+        - secretRef:
+            name: mongodb-secret
+        volumeMounts:
+        - name: mongodb-persistent-storage
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-persistent-storage
+    spec:
+      accessModes: {{ .Values.storage.accessModes | toJson }}
+      resources:
+        requests:
+          storage: {{ .Values.storage.size }}
