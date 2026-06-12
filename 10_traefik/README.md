@@ -124,11 +124,29 @@ graph TD
 kubectl delete -f grade-submission-portal/ -f grade-submission-api/ -f mongodb/
 ```
 
+If you installed the app with Helm, deleting the Kubernetes objects manually does not remove the Helm release record. Helm still thinks the release exists, and future `helm install` commands with the same release name will fail.
+
+**Remove the Helm release too:**
+```bash
+helm uninstall mongodb -n grade-submission
+helm uninstall grade-submission-api -n grade-submission
+helm uninstall grade-submission-portal -n grade-submission
+```
+
+This is why deleting Deployments, StatefulSets, or Services alone is not enough when a chart was installed with Helm: the release metadata is stored in the cluster, and Helm manages the resources as a set.
+
 **Start:**
 ```bash
 kubectl apply -f grade-submission-portal/
 kubectl apply -f grade-submission-api/
 kubectl apply -f mongodb/
+```
+
+Or, if you want Helm to manage the app again:
+```bash
+helm upgrade --install grade-submission-api ./grade-submission-api -n grade-submission --create-namespace
+helm upgrade --install grade-submission-portal ./grade-submission-portal -n grade-submission --create-namespace
+helm upgrade --install mongodb ./mongodb -n grade-submission --create-namespace
 ```
 
 **Verify:**

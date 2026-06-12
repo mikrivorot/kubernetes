@@ -72,12 +72,12 @@ helm install -f values-portal.yaml grade-submission-portal ./grade-submission-po
 helm install -f values-mongodb.yaml mongodb ./mongodb -n grade-submission
 ```
 
-## Ingress Controller
+## Traefik Ingress Controller
 
-To expose the portal on `localhost`, install an Ingress controller in your cluster first. For NGINX:
+To expose the portal on `localhost`, install the Traefik ingress controller in your cluster first.
 
 ```bash
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && helm repo update && helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
+helm repo add traefik https://traefik.github.io/charts && helm repo update && helm install traefik traefik/traefik --namespace traefik --create-namespace
 ```
 
 Then deploy or upgrade the portal chart:
@@ -86,7 +86,7 @@ Then deploy or upgrade the portal chart:
 helm upgrade --install grade-submission-portal ./grade-submission-portal -n grade-submission --create-namespace
 ```
 
-After the controller is running, the portal should be reachable at `http://localhost/` if your local cluster supports host-based ingress.
+After the controller is running, the portal should be reachable at `http://localhost/` if your local cluster supports host-based ingress or if Traefik is configured for local host routing.
 
 ## Listing Deployments
 
@@ -124,6 +124,10 @@ Learn more:
 - Helm template functions: https://helm.sh/docs/chart_template_guide/functions_and_pipelines/
 
 ## Uninstalling
+
+Helm keeps a release record for each chart it installs. This record lives in Kubernetes as metadata and tracks the release name, namespace, chart version, and resource history.
+
+If you delete only the Kubernetes objects (Deployments, Services, StatefulSets), the release record still exists. That is why future `helm install` commands with the same release name can fail unless you also run `helm uninstall`.
 
 ```bash
 helm uninstall grade-submission-api -n grade-submission
