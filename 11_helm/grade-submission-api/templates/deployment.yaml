@@ -22,6 +22,9 @@ spec:
         app.kubernetes.io/instance: grade-submission-api
         app.kubernetes.io/name: grade-submission
         app.kubernetes.io/component: backend
+      annotations:
+        checksum/config: {{ toJson .Values.config | sha256sum }}
+        checksum/secret: {{ toJson .Values.secrets | sha256sum }}
     spec:
       containers:
       - name: grade-submission-api

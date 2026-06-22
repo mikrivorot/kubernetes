@@ -20,6 +20,9 @@ kubectl describe <type> <name>
 kubectl logs grade-submission-portal
 kubectl get pods
 
+# list pods in all namespaces — cluster-wide view (status, restarts, age)
+kubectl get pods -A
+
 # stream logs
 kubectl logs -f <pod> -c <container name, optional>
 kubectl logs -f grade-submission-portal
