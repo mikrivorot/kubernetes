@@ -13,3 +13,5 @@ helm uninstall grade-submission-api -n grade-submission
 helm uninstall grade-submission-portal -n grade-submission
 helm uninstall mongodb -n grade-submission
 ```
+
+MongoDB PVCs are **not** removed by `helm uninstall` — delete them separately if you want to free storage. See [pvc.md](./pvc.md).

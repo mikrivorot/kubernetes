@@ -54,5 +54,8 @@ Helm can be trated as npm, it provides you packages for multiple products:
 ## Uninstalling
 [here](./uninstalling.md)
 
+## PersistentVolumeClaims
+[here](./pvc.md)
+
 ## Helm repos access
 [here](./helm_update_command.md)
