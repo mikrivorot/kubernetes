@@ -21,7 +21,7 @@ ReplicaSet (created by Deployment)
 
 6. Do pods have shared storage?
 
-7. How to manage a mongo cluster?
+7. How to manage a mongo cluster? Do I still need to use stateful set for mongo?
 
 8. What is a maintenance window for GKE cluster?
 

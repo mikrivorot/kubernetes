@@ -36,6 +36,22 @@ helm install grade-submission-portal ./11_helm/grade-submission-portal -n grade-
 helm install mongodb ./11_helm/mongodb -n grade-submission
 ```
 
+or 
+(without mongo, for mongo we will use bitmani + command in a corresponding file)
+
+```
+cd ./grade-submission-api
+helm install grade-submission-api . -n grade-submission
+
+cd ../grade-submission-portal
+helm install grade-submission-portal . -n grade-submission
+```
+
+```
+grade-submission-api    grade-submission        1               2026-06-22 15:46:57.745815 +0300 +03    deployed        grade-submission-api-1.0.0
+grade-submission-portal grade-submission        1               2026-06-22 15:47:17.590054 +0300 +03    deployed        grade-submission-portal-1.0.0 
+```
+
 Idempotent install or upgrade (recommended for scripts):
 
 ```bash

@@ -1,0 +1,66 @@
+# Default values for grade-submission-api Helm chart
+
+# Namespace
+namespace: grade-submission
+
+# Replica count
+replicaCount: 3
+
+# Image configuration
+image:
+  repository: rslim087/kubernetes-course-grade-submission-api
+  tag: stateless-v3
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+
+# Deployment strategy
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 50%
+    maxSurge: 1
+
+# Resource requests and limits
+resources:
+  requests:
+    memory: '48Mi'
+    cpu: '70m'
+  limits:
+    memory: '96Mi'
+
+# Container port
+containerPort: 5001
+
+# Health probes
+livenessProbe:
+  enabled: true
+  path: /healthz
+  port: 3000
+  initialDelaySeconds: 15
+  periodSeconds: 5
+
+readinessProbe:
+  enabled: true
+  path: /readyz
+  port: 3000
+  periodSeconds: 5
+
+# ConfigMap data
+config:
+  MONGODB_HOST: mongodb
+  MONGODB_PORT: '27017'
+
+# Secret data (base64 encoded)
+secrets:
+  MONGODB_USER: YWRtaW4=
+  MONGODB_PASSWORD: cGFzc3dvcmQxMjM=
+
+# Labels
+labels:
+  app.kubernetes.io/name: grade-submission
+  app.kubernetes.io/component: backend
