@@ -1,15 +1,19 @@
-useStatefulSet: true
+# Bitnami MongoDB — replica set (1 primary + 2 secondaries)
+# Chart: bitnami/mongodb (tested with 19.1.14 — check latest: helm search repo bitnami/mongodb --versions)
+# Install: helm install mongodb bitnami/mongodb --version 19.1.14 -f values.yaml -n grade-submission --create-namespace
 
-# Must match API secrets (MONGODB_USER / MONGODB_PASSWORD in grade-submission-api/values.yaml).
-# Requires fresh PVC if mongo was previously installed with auth.enabled: false.
+# replicaset → chart always uses StatefulSet (useStatefulSet is only for architecture=standalone)
+architecture: replicaset
+replicaCount: 3
+
+# 3 data nodes — disable Bitnami default arbiter
+arbiter:
+  enabled: false
+
+# Must match grade-submission-api secrets.MONGODB_URI (admin / password123)
 auth:
   enabled: true
   rootUser: admin
   rootPassword: password123
 
-# Install with release name "mongodb" in grade-submission so Service DNS is "mongodb" (same as 11_helm).
-# This is NOT the Helm chart — chart is still bitnami/mongodb --version 15.6.13.
-# Bitnami removed versioned images from docker.io/bitnami; use bitnamilegacy instead.
-image:
-  repository: bitnamilegacy/mongodb   # docker.io/bitnamilegacy/mongodb
-  tag: 7.0.12-debian-12-r0           # image tag, not helm chart version
+# Uses default chart image (no bitnamilegacy override). OrderedReady bootstrap works on chart 19.x.

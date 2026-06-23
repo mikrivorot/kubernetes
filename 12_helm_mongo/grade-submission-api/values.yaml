@@ -6,10 +6,10 @@ namespace: grade-submission
 # Replica count
 replicaCount: 3
 
-# Image configuration
+# stateless-v4: uses MONGODB_URI (full connection string — supports replica set)
 image:
   repository: rslim087/kubernetes-course-grade-submission-api
-  tag: stateless-v3
+  tag: stateless-v4
   pullPolicy: IfNotPresent
 
 # Service configuration
@@ -50,15 +50,18 @@ readinessProbe:
   port: 3000
   periodSeconds: 5
 
-# ConfigMap data
-config:
-  MONGODB_HOST: mongodb
-  MONGODB_PORT: '27017'
+config: {}
 
 # Secret data (base64 encoded)
+# Replica set URI (default — matches mongodb/values.yaml auth + headless hosts + rs0):
+# Plain URI:
+# mongodb://admin:password123@mongodb-0.mongodb-headless.grade-submission.svc.cluster.local:27017,mongodb-1.mongodb-headless.grade-submission.svc.cluster.local:27017,mongodb-2.mongodb-headless.grade-submission.svc.cluster.local:27017/?replicaSet=rs0
+# Optional read from secondaries (re-encode if you enable):
+# mongodb://admin:password123@mongodb-0.mongodb-headless.grade-submission.svc.cluster.local:27017,mongodb-1.mongodb-headless.grade-submission.svc.cluster.local:27017,mongodb-2.mongodb-headless.grade-submission.svc.cluster.local:27017/?replicaSet=rs0&readPreference=secondaryPreferred
+# Standalone fallback (single service mongodb):
+# mongodb://admin:password123@mongodb:27017/
 secrets:
-  MONGODB_USER: YWRtaW4=
-  MONGODB_PASSWORD: cGFzc3dvcmQxMjM=
+  MONGODB_URI: bW9uZ29kYjovL2FkbWluOnBhc3N3b3JkMTIzQG1vbmdvZGItMC5tb25nb2RiLWhlYWRsZXNzLmdyYWRlLXN1Ym1pc3Npb24uc3ZjLmNsdXN0ZXIubG9jYWw6MjcwMTcsbW9uZ29kYi0xLm1vbmdvZGItaGVhZGxlc3MuZ3JhZGUtc3VibWlzc2lvbi5zdmMuY2x1c3Rlci5sb2NhbDoyNzAxNyxtb25nb2RiLTIubW9uZ29kYi1oZWFkbGVzcy5ncmFkZS1zdWJtaXNzaW9uLnN2Yy5jbHVzdGVyLmxvY2FsOjI3MDE3Lz9yZXBsaWNhU2V0PXJzMA==
 
 # Labels
 labels:

@@ -108,6 +108,36 @@ See also: [11_helm/listing_deployments.md](./11_helm/listing_deployments.md), [1
 
 ---
 
+## Template (render manifests)
+
+Render chart templates to stdout **without** installing or changing the cluster. Use this to inspect what Helm would apply (workload kind, Services, PVC templates, env vars).
+
+```bash
+# local chart
+helm template grade-submission-api ./11_helm/grade-submission-api -n grade-submission
+
+# remote chart + values file
+helm template mongodb bitnami/mongodb \
+  --version 19.1.14 \
+  -f 12_helm_mongo/mongodb/values.yaml \
+  -n grade-submission
+
+# show only workload kinds (StatefulSet vs Deployment)
+helm template mongodb bitnami/mongodb \
+  --version 19.1.14 \
+  -f 12_helm_mongo/mongodb/values.yaml \
+  -n grade-submission | grep 'kind: StatefulSet\|kind: Deployment'
+
+# chart defaults (all parameters)
+helm show values bitnami/mongodb --version 19.1.14 | less
+```
+
+`helm upgrade ... --dry-run` also renders manifests but checks against the live cluster; `helm template` is fully offline.
+
+See also: [12_helm_mongo/mongodb/replicaset.md](./12_helm_mongo/mongodb/replicaset.md) (Bitnami `architecture` / `useStatefulSet` behaviour)
+
+---
+
 ## Upgrade
 
 Apply changes to an existing release (scaling, image tag, config, template edits):
@@ -134,6 +164,8 @@ Preview rendered manifests without applying (dry run):
 helm template grade-submission-api ./11_helm/grade-submission-api -n grade-submission
 helm upgrade grade-submission-api ./11_helm/grade-submission-api -n grade-submission --dry-run
 ```
+
+See [Template (render manifests)](#template-render-manifests) for more examples.
 
 Config changes trigger pod rollouts via checksum annotations — see [11_helm/configmap_rollout.md](./11_helm/configmap_rollout.md).
 
